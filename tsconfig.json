@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "noImplicitAny": false,
+    "removeComments": false,
+    "sourceMap": true,
+    "module": "commonjs",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "outDir": "out"
+  },
+  "exclude": [
+    "out",
+    "node_modules",
+    "dist",
+    "dev",
+    "typings/main.d.ts",
+    "typings/main",
+    "reports"
+  ],
+  "version": "1.8.5"
+}

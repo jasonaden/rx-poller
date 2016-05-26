@@ -1,0 +1,13 @@
+.DS_Store
+.vscode
+node_modules
+dist
+reports
+out
+typings/browser
+typings/browser.d.ts
+typings/main
+typings/main.d.ts
+.idea/
+app/
+doc/

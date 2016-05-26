@@ -1,0 +1,6 @@
+{
+  "ambientDependencies": {
+    "rx": "npm:rx/ts/rx.all.d.ts",
+    "jasmine": "registry:dt/jasmine#2.2.0+20160317120654"
+  }
+}
