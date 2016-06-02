@@ -1,19 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "es5",
     "noImplicitAny": false,
     "removeComments": false,
     "sourceMap": true,
     "module": "commonjs",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "outDir": "out"
+    "outDir": "dist"
   },
   "exclude": [
-    "out",
     "node_modules",
     "dist",
     "dev",
+    "test",
     "typings/main.d.ts",
     "typings/main",
     "reports"

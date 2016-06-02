@@ -236,4 +236,3 @@ export class RxPoller {
   }  
 }
 
-export const RxPollerFactory = () => RxPoller

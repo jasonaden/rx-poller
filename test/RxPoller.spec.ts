@@ -1,5 +1,5 @@
 
-import {RxPoller} from './RxPoller';
+import {RxPoller} from '../src/RxPoller';
 
 describe('RxPoller', () => {
 

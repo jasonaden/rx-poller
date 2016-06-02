@@ -16,27 +16,13 @@ module.exports = function (config) {
         singleRun: true,
         autoWatchBatchDelay: 300,
         files: [
-            './node_modules/phantomjs-polyfill/bind-polyfill.js',
-            './src/index.ts',
-            './src/test.ts'
+            './src/index.ts'
         ],
-        babelPreprocessor: {
-            options: {
-                presets: ['es2015']
-            }
-        },
         preprocessors: {
             'src/index.ts': ['webpack'],
             'src/test.ts': ['webpack'],
             'src/**/!(*.spec)+(.js)': ['coverage']
         },
-        webpackMiddleware: {
-            stats: {
-                chunkModules: false,
-                colors: true
-            }
-        },
-        webpack: webpackConfig,
         reporters: [
             'dots',
             'spec',
