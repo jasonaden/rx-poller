@@ -5,8 +5,7 @@
   "description": "Poller using Rx with exponential backoff and configurable intervals.",
   "scripts": {
     "test-watch": "karma start --auto-watch --no-single-run --NODE_ENV=test",
-    "test": "karma start --NODE_ENV=test",
-    "postinstall": "tsc -d"
+    "test": "karma start --NODE_ENV=test"
   },
   "main": "dist/RxPoller.js",
   "typings": "dist/RxPoller.d.ts",
