@@ -3,7 +3,7 @@
 ### Install
 
 ```sh
-npm i webpack typings typescript -g
+npm i typescript -g
 git clone git@github.com:jasonaden/rx-poller.git
 cd rx-poller
 npm install
@@ -26,6 +26,5 @@ open reports/coverage/index.html
 
 Creating Docs
 ```sh
-typedoc --ignoreCompilerErrors -m commonjs --out ./doc/ src/modules/desk/services/RxPoller.ts
-typedoc --ignoreCompilerErrors -m commonjs --out ./doc/ src/modules
+typedoc --ignoreCompilerErrors -m commonjs --out ./doc/ src/RxPoller.ts
 ```

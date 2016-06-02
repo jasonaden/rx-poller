@@ -6,7 +6,7 @@
   "scripts": {
     "test-watch": "karma start --auto-watch --no-single-run --NODE_ENV=test",
     "test": "karma start --NODE_ENV=test",
-    "postinstall": "tsc -d"
+    "postinstall": "tsc -d -unsafe-perm"
   },
   "main": "dist/RxPoller.js",
   "typings": "dist/RxPoller.d.ts",
