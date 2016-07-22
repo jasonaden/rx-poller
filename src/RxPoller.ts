@@ -93,6 +93,12 @@ export class RxPoller {
   private static _pollers = new Map<String, RxPoller>();
   
   /**
+   * The name of the poller. Mainly to be used for poller.destroy(), 
+   * so the instance can clean itself up.
+   */
+  private _name;
+
+  /**
    * A private cached function to be called for each iteration of the poller.
    * @returns Must return a promise.
    */
@@ -127,7 +133,7 @@ export class RxPoller {
    * When a poll action (Promise) fails, or is rejected, 
    * we will exponentially back off the interval until the max is reached.
    */
-  private _maxInterval$:BehaviorSubject<any> = new BehaviorSubject(8000);  
+  private _maxInterval$:BehaviorSubject<any> = new BehaviorSubject(0);  
   
   /**
    * An Observable which presents the active polling delay between each iteration of the poller.
@@ -165,6 +171,7 @@ export class RxPoller {
    */
   constructor (name: string, config: IRxPollerConfig) {
     this.setConfig(config);
+    this._name = name;
     RxPoller.setPoller(name, this);
     return this;
   }
@@ -197,7 +204,8 @@ export class RxPoller {
    * @param fn Action function to be called for each iteration of the poller. This method should return a Promise.
    */
   setAction (fn) {
-    this._action = () => fn;
+    this._action = () => fn();
+    return this;
   }
   
   /**
@@ -206,6 +214,7 @@ export class RxPoller {
   setConfig (config: IRxPollerConfig) {
     this._interval$.onNext(config.interval || this._interval$.getValue() || 8000);
     this._maxInterval$.onNext(config.maxInterval || this._maxInterval$.getValue() || 300000);
+    return this;
   }
   
   /**
@@ -214,7 +223,8 @@ export class RxPoller {
    * @param cb Function to be called with the results of each interation of the poller.
    */
   subscribe (cb) {
-    this._poller$.subscribe(cb);  
+    this._poller$.subscribe(cb);
+    return this;
   }
   
   /**
@@ -226,6 +236,7 @@ export class RxPoller {
     Observable.timer(forceStart ? 0 : this._interval$.getValue()).subscribe( _ => {
       this._connection = this._poller$.connect(); 
     });
+    return this;
   }
   
   /**
@@ -233,6 +244,16 @@ export class RxPoller {
    */
   stop () {
     this._connection.dispose();
-  }  
+  }
+  
+  destroy () {
+    this.stop();
+    RxPoller.removePoller(this._name);
+  }
+  
+  static removePoller (name) {
+    delete this._pollers[name];
+  }
 }
 
+export const RxPollerFactory = () => RxPoller
