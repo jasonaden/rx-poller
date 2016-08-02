@@ -108,7 +108,7 @@ var RxPoller = (function () {
          * When a poll action (Promise) fails, or is rejected,
          * we will exponentially back off the interval until the max is reached.
          */
-        this._maxInterval$ = new rx_1.BehaviorSubject(8000);
+        this._maxInterval$ = new rx_1.BehaviorSubject(0);
         /**
          * An Observable which presents the active polling delay between each iteration of the poller.
          *
@@ -134,6 +134,7 @@ var RxPoller = (function () {
             .flatMap(function (interval) { return rx_1.Observable.timer(interval); }); })
             .publish();
         this.setConfig(config);
+        this._name = name;
         RxPoller.setPoller(name, this);
         return this;
     }
@@ -164,7 +165,8 @@ var RxPoller = (function () {
      * @param fn Action function to be called for each iteration of the poller. This method should return a Promise.
      */
     RxPoller.prototype.setAction = function (fn) {
-        this._action = function () { return fn; };
+        this._action = function () { return fn(); };
+        return this;
     };
     /**
      * Update configuration options.
@@ -172,6 +174,7 @@ var RxPoller = (function () {
     RxPoller.prototype.setConfig = function (config) {
         this._interval$.onNext(config.interval || this._interval$.getValue() || 8000);
         this._maxInterval$.onNext(config.maxInterval || this._maxInterval$.getValue() || 300000);
+        return this;
     };
     /**
      * Subscribe to a poller observable with a callback.
@@ -180,6 +183,7 @@ var RxPoller = (function () {
      */
     RxPoller.prototype.subscribe = function (cb) {
         this._poller$.subscribe(cb);
+        return this;
     };
     /**
      * Start a poller instance.
@@ -191,12 +195,20 @@ var RxPoller = (function () {
         rx_1.Observable.timer(forceStart ? 0 : this._interval$.getValue()).subscribe(function (_) {
             _this._connection = _this._poller$.connect();
         });
+        return this;
     };
     /**
      * Stop a poller instance.
      */
     RxPoller.prototype.stop = function () {
         this._connection.dispose();
+    };
+    RxPoller.prototype.destroy = function () {
+        this.stop();
+        RxPoller.removePoller(this._name);
+    };
+    RxPoller.removePoller = function (name) {
+        delete this._pollers[name];
     };
     RxPoller._pollers = new Map();
     return RxPoller;
